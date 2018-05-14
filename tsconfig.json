@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es2015",   //supported JS version
+        "module": "commonjs",
+        "moduleResolution": "node",   //use node_modules folder to look for definition(eg. what is express)
+        "outDir": "dist", // to where to transcript files
+        "rootDir": "src", // from where to transcript files
+        "allowJs": true,   //allows transpile of js files , if we have both js and ts files in pur project
+        "allowSyntheticDefaultImports": true,  //to write es2015 code using typescript
+        "esModuleInterop": true,  //to check __esModule flag if export.modules.default exists or not
+        "strict": true    //for strict type checking
+    },
+    "include":[
+        "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
