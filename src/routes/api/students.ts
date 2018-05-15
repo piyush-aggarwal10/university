@@ -49,7 +49,9 @@ route.post('/', (req:Request, res:Response) => {
 //Update student 
 route.put('/:id', (req:Request, res:Response) => {
     Student.findOne({
-        studentId: req.params.id
+        where: {
+            studentId: req.params.id
+        }
     })
     .then((student:any) => {
         Student.update({
@@ -88,7 +90,7 @@ route.get('/:id/batches', (req:Request, res:Response) => {
             }
         })
         .then((studentBatchMappers:any) => {
-           let batches = studentBatchMappers.map((studentBatchMapper) => {
+           let batches = studentBatchMappers.map((studentBatchMapper: any) => {
             return studentBatchMapper.batch
            })
     

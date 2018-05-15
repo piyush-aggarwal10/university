@@ -1,11 +1,11 @@
-import {Course, Batch, Lecture, Teacher, Student, Subject} from '../../db'
+import {Course, Batch, Lecture, Teacher, Student, Subject, StudentBatchMapper} } from '../../db'
 import db from '../../db'
 
 import express, {Request, Response} from 'express'
 const route = express.Router()
 
 //Get all teachers
-route.get('/', (req: any, res: any) => {
+route.get('/', (req: Request, res: Response) => {
     Teacher.findAll()
     .then((teachers: any) => {
         res.json(teachers)
@@ -17,7 +17,7 @@ route.get('/', (req: any, res: any) => {
 })
 
 //Get a particular teacher
-route.get('/:id', (req: any, res: any) => {
+route.get('/:id', (req: any, res: Response) => {
     Teacher.findOne({
         where: {
             teacherId: req.params.id
@@ -33,7 +33,7 @@ route.get('/:id', (req: any, res: any) => {
 })
 
 //Add a new teacher
-route.post('/', (req: any, res: any) => {
+route.post('/', (req: Request, res: Response) => {
     Subject.findOne({
         where: {
             subjectId: (req.body.subjectId)
@@ -59,7 +59,7 @@ route.post('/', (req: any, res: any) => {
 })
 
 //Update teacher
-route.put('/:id', (req: any, res:any) => {
+route.put('/:id', (req: Request, res:Response) => {
     Subject.findOne({
         where: {
             subjectId: (req.body.subjectId)
@@ -101,7 +101,7 @@ route.put('/:id', (req: any, res:any) => {
 })
 
 //Get all batches of a particular teacher
-route.get('/:id/batches', (req:any, res:any) => {
+route.get('/:id/batches', (req:Request, res:Response) => {
     Teacher.findOne({
         where: {
             subjectId: (req.params.id)

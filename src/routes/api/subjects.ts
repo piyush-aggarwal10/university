@@ -129,7 +129,9 @@ route.get('/:id/teachers', (req:Request, res:Response) => {
 //Add new teacher for a subject
 route.post('/:id/teachers', (req:Request, res:Response) => {
     Subject.findOne({
-        subjectId: req.params.id
+        where: {
+            subjectId: req.params.id
+        }
     })
     .then((subject:any) => {
         Teacher.create({

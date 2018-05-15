@@ -5,7 +5,7 @@ import express, {Request, Response} from 'express'
 const route = express.Router()
 
 //Get all courses
-route.get('/', (req:any, res:any) => {
+route.get('/', (req:Request, res:Response) => {
     Course.findAll()
         .then((courses:any) => {
             res.json(courses)
@@ -14,7 +14,7 @@ route.get('/', (req:any, res:any) => {
 })
 
 //Get a particular course
-route.get('/:id', (req:any, res:any) => {
+route.get('/:id', (req:Request, res:Response) => {
     Course.findOne({
         where: {
             courseId: req.params.id
@@ -27,7 +27,7 @@ route.get('/:id', (req:any, res:any) => {
 })
 
 //Add new course
-route.post('/',(req:any,res:any)=>{
+route.post('/',(req:Request,res:Response)=>{
 
     let courseName=req.body.courseName
     Course.create({courseName:courseName})
@@ -38,7 +38,7 @@ route.post('/',(req:any,res:any)=>{
 })
 
 //Update course
-route.put('/:id',(req:any,res:any)=>{
+route.put('/:id',(req:Request,res:any)=>{
     Course.findOne({
         where:
         {
@@ -56,7 +56,7 @@ route.put('/:id',(req:any,res:any)=>{
 })
 
 //Get all batches for a particular course
-route.get('/:id/batches', (req:any, res:any) => {
+route.get('/:id/batches', (req:Request, res:Response) => {
     Batch.findAll({
         where: {
             courseId: req.params.id
@@ -69,7 +69,7 @@ route.get('/:id/batches', (req:any, res:any) => {
 })
 
 //Get a particular batch of a particular course
-route.get('/:courseId/batches/:batchId', (req:any, res:any) => {
+route.get('/:courseId/batches/:batchId', (req:Request, res:Response) => {
     Batch.findOne({
         where: {
             courseId: (req.params.courseId),
@@ -83,7 +83,7 @@ route.get('/:courseId/batches/:batchId', (req:any, res:any) => {
 })
 
 //Add new batch for a particular course
-route.post('/:id1/batches',(req:any,res:any)=>{
+route.post('/:id1/batches',(req:Request,res:Response)=>{
 
     let batchName=req.body.batchName
     Batch.create({
@@ -98,7 +98,7 @@ route.post('/:id1/batches',(req:any,res:any)=>{
 
 
 //Update batch for a particular course
-route.put('/:courseId/batches/:batchId', (req:any, res:any) => {
+route.put('/:courseId/batches/:batchId', (req:Request, res:Response) => {
     Batch.findOne({
         where:
         {
@@ -130,7 +130,7 @@ route.put('/:courseId/batches/:batchId', (req:any, res:any) => {
 })
 
 //Get all lectures for a particular batch of a particular course
-route.get('/:courseId/batches/:batchId/lectures', (req:any, res:any) => {
+route.get('/:courseId/batches/:batchId/lectures', (req:Request, res:Response) => {
     Lecture.findAll({
         where: {
             batchId: req.params.batchId
@@ -143,7 +143,7 @@ route.get('/:courseId/batches/:batchId/lectures', (req:any, res:any) => {
 })
 
 //Get a particular lecture for a particular batch of a particular course
-route.get('/:courseId/batches/:batchId/lectures/:lectureId', (req:any, res:any) => {
+route.get('/:courseId/batches/:batchId/lectures/:lectureId', (req:Request, res:Response) => {
     Lecture.findOne({
         where: {
             batchId: req.params.batchId
@@ -156,7 +156,7 @@ route.get('/:courseId/batches/:batchId/lectures/:lectureId', (req:any, res:any) 
 })
 
 //Add new lecture for a particular batch
-route.post('/:id1/batches/:id2/lectures', (req:any, res:any) => {
+route.post('/:id1/batches/:id2/lectures', (req:Request, res:any) => {
     Teacher.findOne({
         where:{
             teacherId: req.body.teacherId
@@ -181,7 +181,7 @@ route.post('/:id1/batches/:id2/lectures', (req:any, res:any) => {
 })
 
 //Update lecture
-route.put('/:id1/batches/:id2/lectures/:id3', (req:any, res:any)=>{
+route.put('/:id1/batches/:id2/lectures/:id3', (req:Request, res:Response)=>{
     Lecture.update({
         lectureName: req.body.lectureName
     },{
@@ -197,15 +197,16 @@ route.put('/:id1/batches/:id2/lectures/:id3', (req:any, res:any)=>{
 })
 
 //Get all students for a particular batch of a particular course
-route.get('/:courseId/batches/:batchId/students', (req:any, res:any) => {
+route.get('/:courseId/batches/:batchId/students', (req:Request, res:Response) => {
+    var studentBatchList:any[];
     StudentBatchMapper.findAll({
         include: [Student],
         where: {
             batchId: req.params.batchId
         }
     })
-    .then((studentBatchMappers:any) => {
-        let students = studentBatchMappers.map((studentBatchMapper) => {
+    .then((studentBatchList:any) => {
+        let students = studentBatchList.map((studentBatchMapper:any) => {
             return studentBatchMapper.student
            })
     
@@ -214,7 +215,7 @@ route.get('/:courseId/batches/:batchId/students', (req:any, res:any) => {
 })
 
 //Add new student for a batch
-route.post('/:id1/batches/:id2/students',(req:any,res:any)=>{
+route.post('/:id1/batches/:id2/students',(req:Request,res:Response)=>{
     StudentBatchMapper.create({
         studentId: req.body.studentId,
         batchId: req.params.id2
@@ -227,7 +228,7 @@ route.post('/:id1/batches/:id2/students',(req:any,res:any)=>{
 
 //Get all teachers for a particular batch of a particular course
 route.get('/:id1/batches/:id2/teachers',(req:Request,res:Response)=>{
-    var teachersList=[];
+    var teachersList:any[];
     Subject.findAll({
         where:{
             courseId:req.params.id1
