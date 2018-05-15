@@ -1,4 +1,4 @@
-import {Course, Batch, Lecture, Teacher, Student, Subject, StudentBatchMapper} } from '../../db'
+import {Course, Batch, Lecture, Teacher, Student, Subject, StudentBatchMapper}  from '../../db'
 import db from '../../db'
 
 import express, {Request, Response} from 'express'
