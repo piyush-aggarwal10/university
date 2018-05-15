@@ -146,6 +146,7 @@ route.get('/:courseId/batches/:batchId/lectures', (req:Request, res:Response) =>
 route.get('/:courseId/batches/:batchId/lectures/:lectureId', (req:Request, res:Response) => {
     Lecture.findOne({
         where: {
+            lectureId: req.params.lectureId,
             batchId: req.params.batchId
         }
     })
@@ -216,14 +217,27 @@ route.get('/:courseId/batches/:batchId/students', (req:Request, res:Response) =>
 
 //Add new student for a batch
 route.post('/:id1/batches/:id2/students',(req:Request,res:Response)=>{
-    StudentBatchMapper.create({
-        studentId: req.body.studentId,
-        batchId: req.params.id2
+    StudentBatchMapper.findOne({
+        include: [Student],
+        where: {
+            batchId: req.params.id2,
+            studentId: req.body.studentId
+        }
     })
-    .then((studentBatchMapper:any)=>{
-        res.json(studentBatchMapper)
+    .then((studentBatchMapper: any) => {
+        console.log("already exists")
     })
-    .catch((err:any) => res.send({success:false}))
+    .catch(() => {
+        StudentBatchMapper.create({
+            studentId: req.body.studentId,
+            batchId: req.params.id2
+        })
+        .then((studentBatchMapper:any)=>{
+            res.json(studentBatchMapper)
+        })
+        .catch((err:any) => res.send({success:false}))
+    })
+    
 })
 
 //Get all teachers for a particular batch of a particular course

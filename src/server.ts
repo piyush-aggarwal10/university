@@ -1,8 +1,10 @@
 import express, {Request, Response} from 'express'
 import path from 'path'
+var cors = require('cors')
 import routesapi from './routes/api'
 
 const app = express()
+app.use(cors())
 
 app.use(express.json())
 
